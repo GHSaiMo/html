@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资本市场分析：赚钱就赚钱，请不要搞偶像崇拜</title>
+    <meta name="description" content="关于小米配股、港股市场及科技股走势的深度分析">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        dark: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        serif: ['Georgia', 'serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Preline UI -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@preline/overlay@1.0.0/dist/overlay.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@preline/overlay@1.0.0/dist/overlay.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            @apply bg-gray-50 dark:bg-dark-900 text-gray-800 dark:text-gray-200 transition-colors duration-200;
+        }
+        
+        .prose {
+            @apply max-w-none;
+        }
+        
+        .prose a {
+            @apply text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 transition-colors;
+        }
+        
+        .card {
+            @apply bg-white dark:bg-dark-800 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700;
+        }
+        
+        .card-hover {
+            @apply transform hover:-translate-y-1;
+        }
+        
+        .btn {
+            @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-all duration-200;
+        }
+        
+        .btn-primary {
+            @apply bg-primary-600 hover:bg-primary-700 text-white;
+        }
+        
+        .btn-secondary {
+            @apply bg-secondary-600 hover:bg-secondary-700 text-white;
+        }
+        
+        .chart-container {
+            @apply w-full h-64 bg-white dark:bg-dark-800 rounded-xl p-4;
+        }
+        
+        .tag {
+            @apply inline-block px-3 py-1 rounded-full text-xs font-semibold mr-2 mb-2;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/80 dark:bg-dark-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-xl font-bold text-gray-800 dark:text-white">大佳的投资笔记</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:inline"></i>
+                </button>
+                <a href="#" class="btn btn-primary hidden md:inline-flex">
+                    <i class="fas fa-rss mr-2"></i> 订阅
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="py-12 md:py-16 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-dark-800 dark:to-dark-800">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center fade-in">
+                <span class="tag bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">市场分析</span>
+                <h1 class="text-3xl md:text-4xl font-bold mt-4 mb-6 text-gray-900 dark:text-white">赚钱就赚钱，资本市场请不要搞偶像崇拜</h1>
+                <div class="flex items-center justify-center space-x-4 text-gray-600 dark:text-gray-300">
+                    <div class="flex items-center">
+                        <i class="fas fa-user mr-2"></i>
+                        <span>皑大佳</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-calendar mr-2"></i>
+                        <span>2025年03月25日</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span>8分钟阅读</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        <div class="max-w-4xl mx-auto">
+            <!-- Disclaimer -->
+            <div class="card p-6 mb-8 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 slide-up">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 pt-1">
+                        <i class="fas fa-exclamation-triangle text-yellow-500 dark:text-yellow-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-yellow-800 dark:text-yellow-200">免责声明</h3>
+                        <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
+                            <p>本文是个人日记，不构成投资建议。文中所有观点，仅代表个人立场，不具有任何指导作用。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Article Content -->
+            <article class="prose prose-lg dark:prose-invert max-w-none slide-up">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">小米配股带崩港股市场</h2>
+                <p>小米这次配股，终于是带崩了港股市场。为什么上一次比亚迪配股，没有这么大的动静？因为比亚迪当时的配股，市场还存在侥幸，认为这只是一个偶然。而等到小米之后，市场终于意识到，这不是一个偶然，而是新的融资军备竞赛。</p>
+                
+                <div class="card p-6 my-6">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 pt-1">
+                            <i class="fas fa-lightbulb text-primary-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">关键洞察</h3>
+                            <div class="mt-2 text-gray-700 dark:text-gray-300">
+                                <p>小米已经示范了，所以，小鹏呢，理想呢，蔚来呢，还有更多的高位股呢？当然，这个时候，应该骂雷军吗？不应该骂。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p>2月底的时候，我们就预感，小米会是恒生科技的风暴中心。提前说好，这次被套了，就不要骂雷军了。</p>
+                
+                <p>对于这次配股，我们还是昨天的观点：作为一个商人，这是一次很正确的选择。对于上市公司，以及实际控制人雷军，都是一个利好。但相反，对于小股东，尤其是这波恒科热潮进入的小股东来说，是绝对的利空。</p>
+                
+                <blockquote class="border-l-4 border-primary-500 pl-4 italic text-gray-700 dark:text-gray-300 my-6">
+                    <p>我们进入到资本市场，说到底，是为了搞钱。资本市场，没有偶像崇拜。</p>
+                </blockquote>
+                
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mt-12">蔡崇信发言与科技股下跌</h2>
+                <p>除了小米配股之外，还有一个利空。蔡崇信今天在香港的发言。正常情况下，这其实不是一个利空。这是因为，蔡只是把大家都知道一个事实说出来。只不过，大家捕捉到的信息就变成了，数据中心建设，存在泡沫。</p>
+                
+                <div class="card p-6 my-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">市场反应</h3>
+                            <p class="text-gray-600 dark:text-gray-400 mt-1">科技股成交占比变化</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <span class="tag bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">下跌</span>
+                            <span class="tag bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">TMT</span>
+                        </div>
+                    </div>
+                    <div class="chart-container mt-4">
+                        <!-- 这里应该是图表，用CSS模拟 -->
+                        <div class="relative h-full">
+                            <div class="absolute bottom-0 left-0 right-0 h-3/4 bg-gradient-to-r from-blue-100 to-blue-300 dark:from-blue-900 dark:to-blue-700 rounded-lg"></div>
+                            <div class="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-r from-red-100 to-red-300 dark:from-red-900 dark:to-red-700 rounded-lg"></div>
+                            <div class="absolute top-4 left-4">
+                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">成交占比趋势</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p>市场的确因为这个消息，产生了一些负面影响。不过这并不是主要原因。事实上，万国数据在今天下跌之前，下跌趋势都已经很明确了。而TMT占市场的成交比，早就开始是下滑。只不过今天跳水进一步加剧而已。</p>
+                
+                <p>说到底，市场的风向早就变了。只不过大部分套牢其中的散户，不愿意承认而已。</p>
+                
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mt-12">交易操作与市场观察</h2>
+                <p>当然，就我们自己而言，可能还是要感谢一下蔡的发言，以及媒体断章取义的传播。因为，我们今天，顺势平了1000张，科创50的看空合约。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+                    <div class="card p-6">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">交易详情</h3>
+                            <span class="tag bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">盈利</span>
+                        </div>
+                        <div class="mt-4 space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">合约数量</span>
+                                <span class="font-medium">1000张</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">买入价格</span>
+                                <span class="font-medium">1200元</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">卖出价格</span>
+                                <span class="font-medium">300元</span>
+                            </div>
+                            <div class="flex justify-between border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
+                                <span class="text-gray-600 dark:text-gray-400">每张盈利</span>
+                                <span class="font-medium text-green-600 dark:text-green-400">900元</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">科创板走势观察</h3>
+                        <p class="mt-2 text-gray-700 dark:text-gray-300">看起来，今年好像是在炒科技股。可如果你错过了2月6日的大阳线，又错过了2月21日大阳线，那么你其实很难赚钱。</p>
+                        <div class="mt-4">
+                            <span class="tag bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">时间点</span>
+                            <span class="tag bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">关键决策</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <p>我们一路从2月底的1200多元，卖到了300多元，每张合约了赚了900，今天平仓。如果不是因为明天合约最后一天，避免末日轮的拥挤，我们可能还会继续拿。</p>
+                
+                <p>看着科创板的走势，我真的非常感慨。2月底在进入，等待你的，就是漫长而持续性的下跌。资本市场，就是如此的残酷。</p>
+                
+                <div class="card p-6 my-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white">阿里股价竞猜结果</h3>
+                            <p class="text-gray-600 dark:text-gray-400 mt-1">市场预测 vs 实际结果</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <span class="tag bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">竞猜</span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium">预测200元以上</span>
+                            <span class="text-sm">35%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                            <div class="bg-yellow-400 dark:bg-yellow-500 h-2.5 rounded-full" style="width: 35%"></div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4 mb-2">
+                            <span class="text-sm font-medium">预测131元左右</span>
+                            <span class="text-sm">0.1%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                            <div class="bg-green-400 dark:bg-green-500 h-2.5 rounded-full" style="width: 10%"></div>
+                        </div>
+                        <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">最终，收获大奖的却是留言131元的绝对低价。留言在130元左右的这比例，大概只有千分之一。</p>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mt-12">投资组合表现</h2>
+                <p>今天长线组合上涨0.57%。再创历史新高。而沪深300上涨0.06%。因此，超额收益明显攀升。并非常接近前期高点。</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+                    <div class="card p-6">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">A股投资组合</h3>
+                        <div class="mt-4 space-y-3">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">股票</span>
+                                    <span class="text-sm font-medium">65%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-primary-600 h-2.5 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">国债</span>
+                                    <span class="text-sm font-medium">35%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-secondary-600 h-2.5 rounded-full" style="width: 35%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">24年以来收益</span>
+                                <span class="font-medium text-green-600 dark:text-green-400">41%</span>
+                            </div>
+                            <div class="flex justify-between mt-2">
+                                <span class="text-gray-600 dark:text-gray-400">最大回撤</span>
+                                <span class="font-medium">1%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-6">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">港股投资组合</h3>
+                        <div class="mt-4 space-y-3">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">股票</span>
+                                    <span class="text-sm font-medium">58%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-primary-600 h-2.5 rounded-full" style="width: 58%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">对冲</span>
+                                    <span class="text-sm font-medium">20%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-secondary-600 h-2.5 rounded-full" style="width: 20%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">现金</span>
+                                    <span class="text-sm font-medium">22%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-gray-400 h-2.5 rounded-full" style="width: 22%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">今日涨幅</span>
+                                <span class="font-medium text-green-600 dark:text-green-400">1.16%</span>
+                            </div>
+                            <div class="flex justify-between mt-2">
+                                <span class="text-gray-600 dark:text-gray-400">总收益</span>
+                                <span class="font-medium">16.67%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p>今天上涨之后，我们24年以来收益，接近41%。从10月8日上证3674点以来，我们又赚取了约10个点。其中最大回撤在1%左右。</p>
+                
+                <p>这个过程没有追逐任何热门股票，都是朴实无华，最简单的操作。</p>
+                
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mt-12">总结与展望</h2>
+                <ol class="list-decimal pl-6 space-y-4">
+                    <li>
+                        <p><strong>小米融资带崩了港股</strong>。不过，这是某种意义上必然会发生的一次。港股特殊的配股制度，本身就非常有利于在股价高位的时候融资。而配股的效果，类似于一次减持。其实这种下跌，对于港股来说并不算什么。港股真正要担心的是美元指数重新上涨，以及美债收益率飙升。</p>
+                    </li>
+                    <li>
+                        <p><strong>蔡崇信的发言</strong>，客观上说了事实。但被媒体断章取义之后，加重了今天算力板块的下跌。不过这并不是根本原因。根本原因是科技股在月初之后，成交越来越不活跃，本身就是被市场逐渐抛弃了。下行期间，遇到这种消息，很容易成为惊弓之鸟。</p>
+                    </li>
+                </ol>
+                
+                <p class="mt-6">市场今天最大的反馈，其实是缩量。今天亏钱效应并不算太大。但还是那个问题，杠杆究竟要如何消化，又如何在成交越来越低的市场实现出货，我们拭目以待。</p>
+            </article>
+            
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2 mt-12">
+                <span class="tag bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">港股</span>
+                <span class="tag bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">小米</span>
+                <span class="tag bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">配股</span>
+                <span class="tag bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">科技股</span>
+                <span class="tag bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">投资策略</span>
+            </div>
+            
+            <!-- Author Bio -->
+            <div class="card p-6 mt-12">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="作者头像">
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white">皑大佳</h3>
+                        <p class="text-gray-600 dark:text-gray-400">资本市场观察者，专注于港股和A股市场分析</p>
+                        <div class="flex space-x-4 mt-2">
+                            <a href="#" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                <i class="fab fa-weixin"></i>
+                            </a>
+                            <a href="#" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                <i class="fas fa-globe"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter -->
+            <div class="card p-6 mt-8 bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-dark-800 dark:to-dark-800 border-primary-200 dark:border-primary-800">
+                <div class="text-center">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">订阅投资笔记</h3>
+                    <p class="mt-2 text-gray-600 dark:text-gray-300">获取最新的市场分析和投资策略</p>
+                    <div class="mt-4 flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+                        <input type="email" placeholder="您的邮箱地址" class="flex-grow px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        <button class="btn btn-primary whitespace-nowrap">
+                            <i class="fas fa-paper-plane mr-2"></i> 订阅
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-100 dark:bg-dark-800 border-t border-gray-200 dark:border-gray-700 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="text-lg font-bold text-gray-800 dark:text-white">大佳的投资笔记</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-gray-900 dark:hover:text-white">关于</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 dark:hover:text-white">归档</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 dark:hover:text-white">隐私</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 dark:hover:text-white">联系</a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700 text-center text-gray-500 dark:text-gray-400">
+                <p>© 2025 大佳的投资笔记. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Back to Top -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 p-3 rounded-full bg-primary-600 text-white shadow-lg hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <!-- Scripts -->
+    <script>
+        // 主题切换
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+        
+        // 返回顶部按钮
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+            }
+        });
+        
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 动画效果
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.slide-up, .fade-in');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+        
+        // 初始化动画状态
+        document.querySelectorAll('.slide-up').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+        });
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transition = 'opacity 0.5s ease-out';
+        });
+    </script>
+</body>
+</html>
