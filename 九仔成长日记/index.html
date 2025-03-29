@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>九仔成长日记</title>
+    <!-- TailwindCSS 通过CDN引入 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Preline UI 组件库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/preline/dist/preline.min.css" />
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 自定义TailwindCSS配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                        secondary: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            200: '#fbcfe8',
+                            300: '#f9a8d4',
+                            400: '#f472b6',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                            800: '#9d174d',
+                            900: '#831843',
+                        },
+                        baby: {
+                            blue: '#89CFF0',
+                            pink: '#F4C2C2',
+                            yellow: '#FDFD96',
+                            green: '#B5EAD7',
+                            purple: '#C8A2C8',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['ZCOOL KuaiLe', 'sans-serif'],
+                        'cute': ['Ma Shan Zheng', 'cursive']
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- 引入可爱字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        /* 自定义样式 */
+        body {
+            background-color: #FFF9F0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FFD6E8' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .photo-card {
+            transition: all 0.3s ease;
+            aspect-ratio: 1/1;
+            height: auto;
+        }
+        .photo-card img {
+            object-fit: cover;
+            object-position: center;
+            width: 100%;
+            height: 100%;
+        }
+        .photo-card .absolute {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            padding: 1rem;
+            box-sizing: border-box;
+            width: 100%;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+        .photo-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .baby-info-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.9) 100%);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .cloud {
+            position: absolute;
+            opacity: 0.8;
+            animation: float 8s ease-in-out infinite;
+        }
+        .cloud-1 {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .cloud-2 {
+            top: 15%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+        .cloud-3 {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        .cloud-4 {
+            bottom: 25%;
+            right: 10%;
+            animation-delay: 6s;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800">
+    <!-- 装饰性云朵 -->
+    <div class="cloud cloud-1">
+        <svg width="80" height="60" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M75 45C77.7614 45 80 42.7614 80 40C80 37.2386 77.7614 35 75 35C74.8898 35 74.7803 35.0036 74.6719 35.0107C73.6073 27.9625 67.4651 22.5 60 22.5C57.2963 22.5 54.7565 23.1837 52.5307 24.3795C49.7289 16.9619 42.5372 11.6667 34.1667 11.6667C23.2803 11.6667 14.4508 20.4961 14.4508 31.3825C14.4508 31.7992 14.4683 32.2121 14.5025 32.6206C14.4683 32.6191 14.4342 32.6183 14.4 32.6183C9.97715 32.6183 6.4 36.1954 6.4 40.6183C6.4 45.0411 9.97715 48.6183 14.4 48.6183H75V45Z" fill="white"/>
+        </svg>
+    </div>
+    <div class="cloud cloud-2">
+        <svg width="100" height="70" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M93.75 56.25C97.2018 56.25 100 53.4518 100 50C100 46.5482 97.2018 43.75 93.75 43.75C93.6122 43.75 93.4754 43.7545 93.3398 43.7634C92.0091 34.9531 84.3314 28.125 75 28.125C71.6204 28.125 68.4456 29.0296 65.6634 30.4744C62.1611 21.2024 53.1715 14.5833 42.7083 14.5833C29.1004 14.5833 18.0635 25.6201 18.0635 39.2281C18.0635 39.749 18.0854 40.2651 18.1281 40.7757C18.0854 40.7739 18.0427 40.7729 18 40.7729C12.4714 40.7729 8 45.2443 8 50.7729C8 56.3014 12.4714 60.7729 18 60.7729H93.75V56.25Z" fill="white"/>
+        </svg>
+    </div>
+    <div class="cloud cloud-3">
+        <svg width="70" height="50" viewBox="0 0 70 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M65.625 39.375C67.9407 39.375 69.8214 37.4943 69.8214 35.1786C69.8214 32.8629 67.9407 30.9821 65.625 30.9821C65.5286 30.9821 65.4328 30.9853 65.3379 30.9915C64.4064 24.9671 59.0319 20.3571 52.5 20.3571C50.1343 20.3571 47.9119 21.0207 45.9644 22.1321C43.5128 15.8417 37.22 11.3095 29.8958 11.3095C20.3703 11.3095 12.6444 19.0354 12.6444 28.5609C12.6444 28.9593 12.6598 29.3541 12.6897 29.7446C12.6598 29.7433 12.6299 29.7426 12.6 29.7426C8.73 29.7426 5.6 32.8726 5.6 36.7426C5.6 40.6126 8.73 43.7426 12.6 43.7426H65.625V39.375Z" fill="white"/>
+        </svg>
+    </div>
+    <div class="cloud cloud-4">
+        <svg width="90" height="65" viewBox="0 0 90 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M84.375 50.625C87.4816 50.625 90 48.1066 90 45C90 41.8934 87.4816 39.375 84.375 39.375C84.251 39.375 84.1278 39.379 84.0058 39.387C82.8082 31.4578 75.8983 25.3125 67.5 25.3125C64.4583 25.3125 61.601 26.1267 59.097 27.427C55.945 19.0822 47.8543 13.125 38.4375 13.125C26.1903 13.125 16.2571 23.0581 16.2571 35.3053C16.2571 35.7741 16.2769 36.2386 16.3153 36.6982C16.2769 36.6965 16.2385 36.6956 16.2 36.6956C11.2243 36.6956 7.2 40.7199 7.2 45.6956C7.2 50.6713 11.2243 54.6956 16.2 54.6956H84.375V50.625Z" fill="white"/>
+        </svg>
+    </div>
+
+    <!-- 页面内容 -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- 页面标题 -->
+        <header class="text-center mb-12 fade-in">
+            <h1 class="text-4xl md:text-6xl font-cute text-baby-blue font-bold mb-4 animate-wiggle inline-block">
+                <i class="fas fa-baby text-baby-pink mr-2"></i>九仔成长日记
+                <i class="fas fa-heart text-baby-pink ml-2 animate-pulse"></i>
+            </h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">记录宝贝的每一个精彩瞬间 💖</p>
+        </header>
+
+        <!-- 宝宝基本信息卡片 -->
+        <div class="baby-info-card rounded-3xl p-6 md:p-8 mb-12 max-w-4xl mx-auto fade-in" style="animation-delay: 0.2s;">
+            <h2 class="text-3xl font-cute text-baby-blue mb-6 flex items-center">
+                <i class="fas fa-id-card text-baby-green mr-3"></i>宝宝档案
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-blue flex items-center justify-center mr-4">
+                            <i class="fas fa-signature text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">大名</p>
+                            <p class="text-lg font-medium">陶新云</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-pink flex items-center justify-center mr-4">
+                            <i class="fas fa-child text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">小名</p>
+                            <p class="text-lg font-medium">九仔</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-yellow flex items-center justify-center mr-4">
+                            <i class="fas fa-birthday-cake text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">出生日期</p>
+                            <p class="text-lg font-medium">2025年3月5日</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-green flex items-center justify-center mr-4">
+                            <i class="fas fa-venus-mars text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">性别</p>
+                            <p class="text-lg font-medium">男</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-purple flex items-center justify-center mr-4">
+                            <i class="fas fa-star text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">星座</p>
+                            <p class="text-lg font-medium">双鱼座 ♓</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-blue flex items-center justify-center mr-4">
+                            <i class="fas fa-dragon text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">属相</p>
+                            <p class="text-lg font-medium">蛇</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-pink flex items-center justify-center mr-4">
+                            <i class="fas fa-weight text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">出生体重</p>
+                            <p class="text-lg font-medium">6斤3两 (3.15kg)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-yellow flex items-center justify-center mr-4">
+                            <i class="fas fa-ruler-vertical text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">出生身长</p>
+                            <p class="text-lg font-medium">49cm</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-green flex items-center justify-center mr-4">
+                            <i class="fas fa-weight text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">最新体重</p>
+                            <p class="text-lg font-medium">8斤 (4.0kg)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-baby-purple flex items-center justify-center mr-4">
+                            <i class="fas fa-ruler-vertical text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">最新身高</p>
+                            <p class="text-lg font-medium">53cm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 成长数据可视化 -->
+        <div class="baby-info-card rounded-3xl p-6 md:p-8 mb-12 max-w-4xl mx-auto fade-in" style="animation-delay: 0.4s;">
+            <h2 class="text-3xl font-cute text-baby-green mb-6 flex items-center">
+                <i class="fas fa-chart-line text-baby-blue mr-3"></i>成长曲线
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 体重变化图表 -->
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <h3 class="text-xl font-medium mb-4 text-center">体重变化</h3>
+                    <div class="relative h-64">
+                        <canvas id="weightChart"></canvas>
+                    </div>
+                </div>
+                <!-- 身高变化图表 -->
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <h3 class="text-xl font-medium mb-4 text-center">身高变化</h3>
+                    <div class="relative h-64">
+                        <canvas id="heightChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 照片展示区 -->
+        <div class="mb-12 fade-in" style="animation-delay: 0.6s;">
+            <h2 class="text-3xl font-cute text-baby-pink mb-6 flex items-center justify-center">
+                <i class="fas fa-images text-baby-yellow mr-3"></i>九仔的表情包
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- 照片卡片 -->
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/不懈.jpg" alt="不懈" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">懈</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/打招呼.jpg" alt="打招呼" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">打招呼</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/大哭.jpg" alt="大哭" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">大哭</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/调皮.jpg" alt="调皮" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">调皮</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/惊讶.jpg" alt="惊讶" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">惊讶</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/哭.jpg" alt="哭" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">哭</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/瞄.jpg" alt="瞄" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">瞄</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/难过.jpg" alt="难过" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">难过</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/痛苦.jpg" alt="痛苦" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">痛苦</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/委屈.jpg" alt="委屈" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">委屈</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/握手.jpg" alt="握手" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">握手</h3>
+                    </div>
+                </div>
+                <div class="photo-card bg-white rounded-xl overflow-hidden shadow-md relative">
+                    <img src="pic/张嘴.jpg" alt="张嘴" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 px-3 pb-3">
+                        <h3 class="text-white font-medium">张嘴</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 成长里程碑 -->
+        <div class="baby-info-card rounded-3xl p-6 md:p-8 mb-12 max-w-4xl mx-auto fade-in" style="animation-delay: 0.8s;">
+            <h2 class="text-3xl font-cute text-baby-purple mb-6 flex items-center">
+                <i class="fas fa-flag-checkered text-baby-green mr-3"></i>成长里程碑
+            </h2>
+            <div class="relative border-l-4 border-baby-blue pl-6 ml-6">
+                <!-- 里程碑项目 -->
+                <div class="mb-8 relative">
+                    <div class="absolute -left-10 w-6 h-6 rounded-full bg-baby-yellow border-4 border-white"></div>
+                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                        <h3 class="text-xl font-medium mb-2 text-baby-green">第一次微笑</h3>
+                        <p class="text-gray-600 mb-2">2025年3月12日</p>
+                        <p>九仔对着爸爸妈妈露出了人生中第一个微笑，萌化了所有人的心！</p>
+                    </div>
+                </div>
+                <div class="mb-8 relative">
+                    <div class="absolute -left-10 w-6 h-6 rounded-full bg-baby-green border-4 border-white"></div>
+                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                        <h3 class="text-xl font-medium mb-2 text-baby-purple">第一次做鬼脸</h3>
+                        <p class="text-gray-600 mb-2">2025年3月21日</p>
+                        <p>九仔突然做了一个鬼脸，把爸爸妈妈都逗笑了！</p>
+                    </div>
+                </div>
+                <div class="mb-8 relative">
+                    <div class="absolute -left-10 w-6 h-6 rounded-full bg-baby-purple border-4 border-white"></div>
+                    <div class="bg-white rounded-xl p-4 shadow-sm">
+                        <h3 class="text-xl font-medium mb-2 text-baby-pink">第一次抬头</h3>
+                        <p class="text-gray-600 mb-2">2025年3月22日</p>
+                        <p>九仔成功完成了人生中第一次抬头，展示了他的运动天赋！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部家长信息区域 -->
+        <footer class="baby-info-card rounded-3xl p-6 md:p-8 max-w-4xl mx-auto text-center fade-in" style="animation-delay: 1s;">
+            <h2 class="text-3xl font-cute text-baby-blue mb-6 flex items-center justify-center">
+                <i class="fas fa-heart text-baby-pink mr-3"></i>爱的见证
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="flex items-center justify-center mb-3">
+                        <div class="w-12 h-12 rounded-full bg-baby-blue flex items-center justify-center mr-3">
+                            <i class="fas fa-male text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-medium">宝爸：九哥</h3>
+                    </div>
+                    <p class="text-gray-600">永远守护你成长的每一步</p>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="flex items-center justify-center mb-3">
+                        <div class="w-12 h-12 rounded-full bg-baby-pink flex items-center justify-center mr-3">
+                            <i class="fas fa-female text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-medium">宝妈：可达</h3>
+                    </div>
+                    <p class="text-gray-600">用爱陪伴你的每个瞬间</p>
+                </div>
+            </div>
+            <div class="text-gray-500 text-sm">
+                <p>© 2025 九仔成长日记 - 充满爱的家庭记忆</p>
+                <p class="mt-2">愿你健康快乐地成长，成为最棒的自己！</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Chart.js 图表库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Preline UI JS -->
+    <script src="https://cdn.jsdelivr.net/npm/preline/dist/preline.js"></script>
+    <!-- 自定义脚本 -->
+    <script>
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 体重变化图表
+            const weightCtx = document.getElementById('weightChart').getContext('2d');
+            const weightChart = new Chart(weightCtx, {
+                type: 'line',
+                data: {
+                    labels: (() => {
+                        const startDate = new Date('2025-03-05');
+                        const endDate = new Date();
+                        const diffDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+                        const interval = Math.floor(diffDays / 5);
+                        
+                        const labels = [];
+                        for (let i = 0; i < 6; i++) {
+                            const date = new Date(startDate);
+                            date.setDate(date.getDate() + (i * interval));
+                            const month = date.getMonth() + 1;
+                            const day = date.getDate();
+                            labels.push(`${month}月${day}日`);
+                        }
+                        labels[5] = '现在';
+                        return labels;
+                    })(),
+                    datasets: [{
+                        label: '体重 (kg)',
+                        data: [3.15, 3.3, 3.55, 3.7, 3.8, 4.0],
+                        backgroundColor: 'rgba(137, 207, 240, 0.2)',
+                        borderColor: 'rgba(137, 207, 240, 1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: 'rgba(137, 207, 240, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 3,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 身高变化图表
+            const heightCtx = document.getElementById('heightChart').getContext('2d');
+            const heightChart = new Chart(heightCtx, {
+                type: 'line',
+                data: {
+                    labels: (() => {
+                        const startDate = new Date('2024-03-05');
+                        const endDate = new Date();
+                        const diffDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+                        const interval = Math.floor(diffDays / 5);
+                        
+                        const labels = [];
+                        for (let i = 0; i < 6; i++) {
+                            const date = new Date(startDate);
+                            date.setDate(date.getDate() + (i * interval));
+                            const month = date.getMonth() + 1;
+                            const day = date.getDate();
+                            labels.push(`${month}月${day}日`);
+                        }
+                        labels[5] = '现在';
+                        return labels;
+                    })(),
+                    datasets: [{
+                        label: '身高 (cm)',
+                        data: [49, 50, 50.8, 51.5, 52, 53],
+                        backgroundColor: 'rgba(244, 194, 194, 0.2)',
+                        borderColor: 'rgba(244, 194, 194, 1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: 'rgba(244, 194, 194, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 48,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 为照片卡片添加悬停效果
+            const photoCards = document.querySelectorAll('.photo-card');
+            photoCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.classList.add('scale-105');
+                    this.style.zIndex = '10';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.classList.remove('scale-105');
+                    this.style.zIndex = '1';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
